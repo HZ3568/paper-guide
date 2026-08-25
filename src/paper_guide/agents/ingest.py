@@ -1,5 +1,5 @@
 """
-Ingest Agent —— OpenDetect_AI
+Ingest Agent —— paper-guide
 负责下载论文 PDF、解析文本、分块存入 Chroma 向量库。
 """
 
@@ -7,11 +7,11 @@ from __future__ import annotations
 
 from langchain_core.messages import AIMessage
 
-from opendetect_ai.approval import approval_required
-from opendetect_ai.state import AgentState, PaperMeta
-from opendetect_ai.tools.progress import push_progress
-from opendetect_ai.tools.rag_tool import ingest_local_pdf, ingest_paper
-from opendetect_ai.env_utils import OPENDETECT_HITL
+from paper_guide.approval import approval_required
+from paper_guide.state import AgentState, PaperMeta
+from paper_guide.tools.progress import push_progress
+from paper_guide.tools.rag_tool import ingest_local_pdf, ingest_paper
+from paper_guide.env_utils import OPENDETECT_HITL
 
 MAX_RETRY = 2  # 单篇论文最多重试次数，超过后永久放弃
 

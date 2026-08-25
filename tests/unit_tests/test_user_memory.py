@@ -2,7 +2,7 @@
 
 import sqlite3
 
-from opendetect_ai import user_memory
+from paper_guide import user_memory
 
 
 def _point_db(monkeypatch, tmp_path):

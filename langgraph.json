@@ -3,7 +3,7 @@
   "python_version": "3.13",
   "dependencies": ["."],
   "graphs": {
-    "agent": "opendetect_ai.graph:graph"
+    "agent": "paper_guide.graph:graph"
   },
   "env": ".env",
   "image_distro": "wolfi"

@@ -1,5 +1,5 @@
 """
-RAG 检索评估 —— OpenDetect_AI
+RAG 检索评估 —— paper-guide
 
 对比「朴素稠密检索(baseline)」与「Hybrid + Self-Query + Rerank(新管线)」在同一
 受控基准语料上的检索质量，量化你在简历里能讲的那句「检索质量提升 X%」。
@@ -21,8 +21,8 @@ RAG 检索评估 —— OpenDetect_AI
 
 运行：
     make eval
-    uv run python -m opendetect_ai.eval.rag_eval --no-judge   # 更快，跳过 LLM 判分
-    uv run python -m opendetect_ai.eval.rag_eval --dataset data/eval/questions.jsonl
+    uv run python -m paper_guide.eval.rag_eval --no-judge   # 更快，跳过 LLM 判分
+    uv run python -m paper_guide.eval.rag_eval --dataset data/eval/questions.jsonl
 
 外部 JSONL 每行格式：
     {"q": "问题", "gold": ["arxiv_id_1", "arxiv_id_2"]}
@@ -158,7 +158,7 @@ EVAL_DIR = "./data/eval_chroma"
 # ══════════════════════════════════════════════════════════════
 def _seed_corpus() -> None:
     """把基准语料写入独立的 eval Chroma 集，不污染真实库。确定性 id → 可重复运行。"""
-    from opendetect_ai.tools import rag_tool, retriever
+    from paper_guide.tools import rag_tool, retriever
 
     rag_tool.CHROMA_PERSIST_DIR = EVAL_DIR
     rag_tool._vectorstore = None                       # 重置单例，指向 eval 集
@@ -242,7 +242,7 @@ def _noise_at(results, k) -> float:
 
 def _judge_relevance(question: str, results: list[dict]) -> float:
     """LLM 判定检索到的内容是否足以回答问题（0/1）。"""
-    from opendetect_ai.env_utils import (
+    from paper_guide.env_utils import (
         OPENDETECT_LLM_MODEL, OPENDETECT_LLM_BASE_URL, OPENDETECT_LLM_API_KEY)
     from langchain_openai import ChatOpenAI
     ctx = "\n---\n".join(r.get("content", "")[:300] for r in results[:5])
@@ -295,7 +295,7 @@ def _load_questions(path: str) -> list[dict]:
 # ══════════════════════════════════════════════════════════════
 def _eval_method(retrieve_fn, k: int, judge: bool, questions: list[dict] | None = None) -> dict:
     import time
-    from opendetect_ai.tools import retriever
+    from paper_guide.tools import retriever
 
     questions = questions or _QUESTIONS
     metric_k = max(1, k)
@@ -360,7 +360,7 @@ def main() -> None:
     )
     args = parser.parse_args()
 
-    from opendetect_ai.env_utils import validate_env
+    from paper_guide.env_utils import validate_env
     validate_env()
 
     if args.dataset:
@@ -373,7 +373,7 @@ def main() -> None:
         print("→ 装载受控基准语料（5 篇目标 + 4 篇跨领域噪音）...")
         _seed_corpus()
 
-    from opendetect_ai.tools.retriever import retrieve, retrieve_dense_only
+    from paper_guide.tools.retriever import retrieve, retrieve_dense_only
     judge = not args.no_judge
 
     print("→ 评估 baseline（纯稠密 top-k）...")

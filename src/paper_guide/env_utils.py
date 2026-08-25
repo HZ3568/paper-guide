@@ -1,4 +1,4 @@
-"""Environment variable loader for OpenDetect_AI."""
+"""Environment variable loader for paper-guide."""
 
 import os
 from dotenv import load_dotenv
@@ -81,7 +81,7 @@ OPENDETECT_ARXIV_MCP_URL = os.getenv(
  
 # ── LangSmith 追踪 ─────────────────────────────────────
 LANGCHAIN_TRACING_V2 = os.getenv("LANGCHAIN_TRACING_V2", "false")
-LANGCHAIN_PROJECT    = os.getenv("LANGCHAIN_PROJECT", "OpenDetect_AI")
+LANGCHAIN_PROJECT    = os.getenv("LANGCHAIN_PROJECT", "paper-guide")
 LANGCHAIN_API_KEY    = os.getenv("LANGCHAIN_API_KEY", LANGSMITH_API_KEY)
  
 # ── 启动检查 ───────────────────────────────────────────

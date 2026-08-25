@@ -1,5 +1,5 @@
 [project]
-name = "opendetect_ai"
+name = "paper-guide"
 version = "0.1.0"
 description = "面向 AI 领域研究者的智能文献管理与问答系统，基于 LangGraph 多智能体工作流，集成 MCP 协议、RAG 检索增强生成与短期/长期记忆机制"
 readme = "README.md"
@@ -44,5 +44,5 @@ dev = [
 ]
  
 [tool.uv.build-backend]
-module-name = "opendetect_ai"
+module-name = "paper_guide"
 source-include = ["langgraph.json", ".env.example", "Makefile", "tests/**"]

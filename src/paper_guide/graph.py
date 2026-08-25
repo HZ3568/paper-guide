@@ -1,5 +1,5 @@
 """
-LangGraph 主工作流 —— OpenDetect_AI
+LangGraph 主工作流 —— paper-guide
 把 Supervisor + 四个子 Agent 串成完整的多智能体图。
 """
 
@@ -11,17 +11,17 @@ import threading
 from concurrent.futures import ThreadPoolExecutor
 from langgraph.checkpoint.sqlite import SqliteSaver          # ← 新增
 
-from opendetect_ai.tools.rag_tool import list_ingested_papers
-from opendetect_ai.state import AgentState, create_initial_state
-from opendetect_ai.agents.resolve import resolve_node
-from opendetect_ai.agents.clarify import clarify_node
-from opendetect_ai.agents.supervisor import supervisor_node
-from opendetect_ai.agents.search import search_node
-from opendetect_ai.agents.ingest import ingest_node
-from opendetect_ai.agents.rag import rag_node
-from opendetect_ai.agents.report import report_node
-from opendetect_ai.agents.verify import verify_node
-from opendetect_ai.env_utils import validate_env, CHROMA_PERSIST_DIR, OPENDETECT_LLM_MODEL, OPENDETECT_LLM_BASE_URL, OPENDETECT_LLM_API_KEY  
+from paper_guide.tools.rag_tool import list_ingested_papers
+from paper_guide.state import AgentState, create_initial_state
+from paper_guide.agents.resolve import resolve_node
+from paper_guide.agents.clarify import clarify_node
+from paper_guide.agents.supervisor import supervisor_node
+from paper_guide.agents.search import search_node
+from paper_guide.agents.ingest import ingest_node
+from paper_guide.agents.rag import rag_node
+from paper_guide.agents.report import report_node
+from paper_guide.agents.verify import verify_node
+from paper_guide.env_utils import validate_env, CHROMA_PERSIST_DIR, OPENDETECT_LLM_MODEL, OPENDETECT_LLM_BASE_URL, OPENDETECT_LLM_API_KEY  
 
 import os
 _DB_PATH = os.path.join(os.path.dirname(CHROMA_PERSIST_DIR), "chat_history.db")
@@ -234,7 +234,7 @@ def spawn_profile_extraction(messages: list, user_id: str = "default") -> None:
     if not messages:
         return
     try:
-        from opendetect_ai.user_memory import extract_and_save_profile
+        from paper_guide.user_memory import extract_and_save_profile
         _profile_executor.submit(
             extract_and_save_profile,
             messages,

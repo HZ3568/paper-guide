@@ -1,5 +1,5 @@
 """
-Search 语义链在线评测（golden set）—— OpenDetect_AI
+Search 语义链在线评测（golden set）—— paper-guide
 
 评的是完整语义链 **resolve_query → SearchIntent**（真实配置模型），而非孤立的 SearchIntent：
 - 自包含问题：resolve 透传（0 次改写 LLM），等价于单独测 SearchIntent（标准分类子集）。
@@ -11,7 +11,7 @@ Search 语义链在线评测（golden set）—— OpenDetect_AI
 
 运行：
     make intent-eval
-    uv run python -m opendetect_ai.eval.intent_eval
+    uv run python -m paper_guide.eval.intent_eval
 """
 
 from __future__ import annotations
@@ -20,9 +20,9 @@ from dataclasses import dataclass, field
 
 from langchain_core.messages import HumanMessage, AIMessage
 
-from opendetect_ai.agents import resolve as resolve_mod
-from opendetect_ai.agents.resolve import resolve_node
-from opendetect_ai.agents.search import (
+from paper_guide.agents import resolve as resolve_mod
+from paper_guide.agents.resolve import resolve_node
+from paper_guide.agents.search import (
     _classify_search_intent,
     _extract_provided_arxiv_id,
     _get_llm,

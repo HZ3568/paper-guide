@@ -1,5 +1,5 @@
 """
-共享状态定义 —— OpenDetect_AI 多智能体工作流
+共享状态定义 —— paper-guide 多智能体工作流
 所有 Agent 读写同一个 AgentState，通过 LangGraph 的 StateGraph 流转。
 """
 

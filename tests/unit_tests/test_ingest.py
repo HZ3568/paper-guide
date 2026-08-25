@@ -6,8 +6,8 @@
 - 第二次路由到 ingest 时，能把失败论文捞回来重试并成功
 """
 
-from opendetect_ai.agents import ingest as ingest_mod
-from opendetect_ai.state import create_initial_state, PaperMeta
+from paper_guide.agents import ingest as ingest_mod
+from paper_guide.state import create_initial_state, PaperMeta
 
 
 class _FakeTool:

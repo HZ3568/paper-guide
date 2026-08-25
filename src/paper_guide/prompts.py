@@ -1,5 +1,5 @@
 """
-各 Agent 的 Prompt 模板 —— OpenDetect_AI
+各 Agent 的 Prompt 模板 —— paper-guide
 统一管理所有提示词，方便后期调整优化。
 """
  
@@ -56,7 +56,7 @@ SUPERVISOR_PROMPT = """你是一个智能学术文献研究助手的调度器，
 你的职责是分析用户请求和当前工作流状态，决定下一步调用哪个智能体。
 
 ## 你的身份
-你是 OpenDetect AI，一个基于 LangGraph 多智能体工作流构建的 AI 学术文献研究助手。
+你是 paper-guide，一个基于 LangGraph 多智能体工作流构建的 AI 学术文献研究助手。
 你擅长搜索、入库和分析深度学习、计算机视觉、NLP 等领域的论文。
 
 ## 可调用的智能体

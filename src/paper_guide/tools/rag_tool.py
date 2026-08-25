@@ -1,5 +1,5 @@
 """
-RAG 工具 —— OpenDetect_AI
+RAG 工具 —— paper-guide
 负责论文 PDF 下载、文本解析、向量入库、语义检索。
 """
 
@@ -26,7 +26,7 @@ from langchain_core.tools import tool
 from langchain_openai import OpenAIEmbeddings
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 
-from opendetect_ai.env_utils import (
+from paper_guide.env_utils import (
     CHROMA_PERSIST_DIR,
     OPENDETECT_EMBED_API_KEY,
     OPENDETECT_EMBED_BASE_URL,
@@ -814,7 +814,7 @@ def retrieve_context(query: str, k: int = 5) -> list[dict]:
         k:     返回最相关的段落数，默认 5
     """
     # 延迟导入：retriever 在模块级导入 rag_tool，这里延迟引用以避免循环导入
-    from opendetect_ai.tools.retriever import retrieve
+    from paper_guide.tools.retriever import retrieve
     return retrieve(query, k=k)
 
 

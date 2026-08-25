@@ -1,5 +1,5 @@
 """
-对话上下文工具 —— OpenDetect_AI
+对话上下文工具 —— paper-guide
 提取最近 N 轮有效对话，格式化为可注入 prompt 的字符串。
 """
 from __future__ import annotations

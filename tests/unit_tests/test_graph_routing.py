@@ -1,10 +1,10 @@
 """单元测试：Search 后确定性边界 + Verifier 校验（不触网的分支）。"""
 
-from opendetect_ai.graph import route_after_search, build_graph
-from opendetect_ai.state import PaperMeta
-from opendetect_ai.agents import verify as verify_mod
-from opendetect_ai.agents import supervisor as sup_mod
-from opendetect_ai.agents.supervisor import RouteDecision, supervisor_node
+from paper_guide.graph import route_after_search, build_graph
+from paper_guide.state import PaperMeta
+from paper_guide.agents import verify as verify_mod
+from paper_guide.agents import supervisor as sup_mod
+from paper_guide.agents.supervisor import RouteDecision, supervisor_node
 from langgraph.pregel import Pregel
 from langchain_core.messages import AIMessage
 
@@ -274,7 +274,7 @@ def test_supervisor_no_pending_when_not_offering(monkeypatch) -> None:
     _patch_supervisor_side_effects(monkeypatch)
     monkeypatch.setattr(
         sup_mod, "_route_with_llm",
-        lambda prompt: RouteDecision(next="FINISH", reason="打招呼", reply="你好呀！我是 OpenDetect AI"),
+        lambda prompt: RouteDecision(next="FINISH", reason="打招呼", reply="你好呀！我是 paper-guide"),
     )
     out = supervisor_node({"user_query": "你好", "messages": []})
     assert out["next"] == "FINISH"

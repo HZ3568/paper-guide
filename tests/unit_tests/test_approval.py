@@ -2,7 +2,7 @@ from datetime import datetime, timedelta, timezone
 
 import pytest
 
-from opendetect_ai import approval
+from paper_guide import approval
 
 
 def _point_db(monkeypatch, tmp_path):

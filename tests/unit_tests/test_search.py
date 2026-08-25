@@ -2,9 +2,9 @@
 
 import pytest
 
-from opendetect_ai.agents import search as search_mod
-from opendetect_ai.agents.search import _extract_provided_arxiv_id, SearchIntent
-from opendetect_ai.tools import arxiv_tool, openalex_mcp_server
+from paper_guide.agents import search as search_mod
+from paper_guide.agents.search import _extract_provided_arxiv_id, SearchIntent
+from paper_guide.tools import arxiv_tool, openalex_mcp_server
 
 
 # ── ① 确定性 arXiv ID / URL 解析（覆盖新式/版本号/URL/旧式）────────

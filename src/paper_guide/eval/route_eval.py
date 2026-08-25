@@ -1,5 +1,5 @@
 """
-Supervisor 路由评测（route-eval）—— OpenDetect_AI（阶段 ⑦.5）
+Supervisor 路由评测（route-eval）—— paper-guide（阶段 ⑦.5）
 
 评的是 Supervisor 的核心职责：给定 (resolved_query, 工作流状态) → 该路由到哪个节点。
 这是「要不要上 TaskSpec」的证据基础——只有当这里出现明显、稳定的错误路由，才值得设计
@@ -13,7 +13,7 @@ Supervisor 路由评测（route-eval）—— OpenDetect_AI（阶段 ⑦.5）
 
 运行：
     make route-eval
-    uv run python -m opendetect_ai.eval.route_eval
+    uv run python -m paper_guide.eval.route_eval
 """
 
 from __future__ import annotations
@@ -21,8 +21,8 @@ from __future__ import annotations
 import time
 from dataclasses import dataclass
 
-from opendetect_ai.prompts import SUPERVISOR_PROMPT
-from opendetect_ai.agents.supervisor import _route_with_llm
+from paper_guide.prompts import SUPERVISOR_PROMPT
+from paper_guide.agents.supervisor import _route_with_llm
 
 
 @dataclass

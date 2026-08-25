@@ -1,5 +1,5 @@
 """
-检索管线 —— OpenDetect_AI
+检索管线 —— paper-guide
 
 在朴素 similarity_search 之上叠加三层能力，专治「脏库召回跨领域噪音」：
 
@@ -32,7 +32,7 @@ from langchain_core.messages import HumanMessage
 from langchain_community.retrievers import BM25Retriever
 from langchain_openai import ChatOpenAI
 
-from opendetect_ai.env_utils import (
+from paper_guide.env_utils import (
     OPENDETECT_LLM_MODEL,
     OPENDETECT_LLM_BASE_URL,
     OPENDETECT_LLM_API_KEY,
@@ -43,7 +43,7 @@ from opendetect_ai.env_utils import (
     OPENDETECT_RERANK_MODEL,
     OPENDETECT_RERANK_MIN_SCORE,
 )
-from opendetect_ai.tools import rag_tool
+from paper_guide.tools import rag_tool
 
 
 # 轻量 LLM 调用计数（供评估统计「每次检索花几次 LLM 调用」）。仅自增，评估侧读取/清零。

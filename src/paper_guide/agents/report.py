@@ -1,5 +1,5 @@
 """
-Report Agent —— OpenDetect_AI
+Report Agent —— paper-guide
 负责基于已入库论文生成结构化综述、对比表或研究脉络总结。
 """
 
@@ -8,12 +8,12 @@ from __future__ import annotations
 from langchain_openai import ChatOpenAI
 from langchain_core.messages import HumanMessage, AIMessage
 
-from opendetect_ai.state import AgentState, answer_message_id, effective_query
-from opendetect_ai.context_utils import build_context_str
-from opendetect_ai.tools.progress import push_progress
-from opendetect_ai.prompts import REPORT_PROMPT
-from opendetect_ai.tools.rag_tool import list_ingested_papers, retrieve_context
-from opendetect_ai.env_utils import (
+from paper_guide.state import AgentState, answer_message_id, effective_query
+from paper_guide.context_utils import build_context_str
+from paper_guide.tools.progress import push_progress
+from paper_guide.prompts import REPORT_PROMPT
+from paper_guide.tools.rag_tool import list_ingested_papers, retrieve_context
+from paper_guide.env_utils import (
     OPENDETECT_LLM_MODEL,
     OPENDETECT_LLM_BASE_URL,
     OPENDETECT_LLM_API_KEY,

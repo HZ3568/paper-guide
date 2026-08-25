@@ -1,4 +1,4 @@
-from opendetect_ai.agents.rag import _format_context
+from paper_guide.agents.rag import _format_context
 
 
 def test_format_context_separates_retrieval_rank_from_element_number() -> None:

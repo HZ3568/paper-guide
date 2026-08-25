@@ -2,7 +2,7 @@
 
 from langchain_core.documents import Document
 
-from opendetect_ai.tools import retriever
+from paper_guide.tools import retriever
 
 
 def _doc(title, arxiv_id="", chunk_idx=0, published="", authors=""):

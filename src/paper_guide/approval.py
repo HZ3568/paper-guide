@@ -11,7 +11,7 @@ from typing import Any
 
 from langgraph.types import interrupt
 
-from opendetect_ai.env_utils import CHROMA_PERSIST_DIR, OPENDETECT_APPROVAL_TTL_SECONDS
+from paper_guide.env_utils import CHROMA_PERSIST_DIR, OPENDETECT_APPROVAL_TTL_SECONDS
 
 
 _TERMINAL = {"approved", "rejected", "expired"}

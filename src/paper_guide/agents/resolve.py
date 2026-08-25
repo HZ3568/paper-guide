@@ -1,5 +1,5 @@
 """
-Resolve Query Agent —— OpenDetect_AI
+Resolve Query Agent —— paper-guide
 每轮入口的「上游查询解析」：把省略/指代/确认式输入解析成自包含 resolved_query，
 并维护 pending_action（搜索承接 kind:"search" / 澄清 kind:"clarification"）。
 
@@ -16,9 +16,9 @@ import re
 
 from langchain_core.messages import HumanMessage
 
-from opendetect_ai.state import AgentState
-from opendetect_ai.tools.progress import push_progress
-from opendetect_ai.agents.clarify import (
+from paper_guide.state import AgentState
+from paper_guide.tools.progress import push_progress
+from paper_guide.agents.clarify import (
     resolve_reference_llm,
     judge_reference,
     grounded_reference_candidates,

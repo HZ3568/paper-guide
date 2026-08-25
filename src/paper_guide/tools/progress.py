@@ -1,5 +1,5 @@
 """
-进度推送工具 —— OpenDetect_AI
+进度推送工具 —— paper-guide
 各 Agent 节点调用 push_progress() 写入进度消息，
 api.py 的 SSE 生成器通过 get_progress_queue() 消费。
 """

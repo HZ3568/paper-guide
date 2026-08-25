@@ -1,5 +1,5 @@
 """
-Search Agent —— OpenDetect_AI
+Search Agent —— paper-guide
 负责根据用户需求搜索学术论文，结果写入 state.search_results。
 
 语义理解分三段（rule / LLM 各归其位）：
@@ -18,16 +18,16 @@ from pydantic import BaseModel, Field
 from langchain_openai import ChatOpenAI
 from langchain_core.messages import HumanMessage, AIMessage
 
-from opendetect_ai.state import AgentState, PaperMeta, effective_query
-from opendetect_ai.tools.progress import push_progress
-from opendetect_ai.tools.mcp_client import call_mcp_tool
-from opendetect_ai.agents.clarify import (
+from paper_guide.state import AgentState, PaperMeta, effective_query
+from paper_guide.tools.progress import push_progress
+from paper_guide.tools.mcp_client import call_mcp_tool
+from paper_guide.agents.clarify import (
     judge_title_pool,
     judge_entity_conflict,
     build_clarify_pending,
     _title_score,
 )
-from opendetect_ai.env_utils import (
+from paper_guide.env_utils import (
     OPENDETECT_LLM_MODEL,
     OPENDETECT_LLM_BASE_URL,
     OPENDETECT_LLM_API_KEY,

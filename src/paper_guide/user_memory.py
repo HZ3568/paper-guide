@@ -1,5 +1,5 @@
 """
-用户长期记忆模块 —— OpenDetect_AI
+用户长期记忆模块 —— paper-guide
 在同一个 chat_history.db 里维护一张 user_profile 表，
 记录用户跨会话的研究偏好、常用领域、感兴趣的论文方向。
 
@@ -44,7 +44,7 @@ def _profile_lock(user_id: str) -> threading.Lock:
 
 # ── 存储路径与表结构 ────────────────────────────────────────────
 def _get_db_path() -> str:
-    from opendetect_ai.env_utils import CHROMA_PERSIST_DIR
+    from paper_guide.env_utils import CHROMA_PERSIST_DIR
     import os
     return os.path.join(os.path.dirname(CHROMA_PERSIST_DIR), "chat_history.db")
 

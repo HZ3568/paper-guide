@@ -1711,67 +1711,6 @@ wheels = [
 ]
 
 [[package]]
-name = "opendetect-ai"
-version = "0.1.0"
-source = { editable = "." }
-dependencies = [
-    { name = "chromadb" },
-    { name = "fastapi" },
-    { name = "langchain" },
-    { name = "langchain-chroma" },
-    { name = "langchain-community" },
-    { name = "langchain-mcp-adapters" },
-    { name = "langchain-openai" },
-    { name = "langchain-text-splitters" },
-    { name = "langgraph" },
-    { name = "langgraph-checkpoint-sqlite" },
-    { name = "mcp" },
-    { name = "pymupdf" },
-    { name = "python-dotenv" },
-    { name = "python-multipart" },
-    { name = "rank-bm25" },
-    { name = "requests" },
-    { name = "uvicorn" },
-]
-
-[package.dev-dependencies]
-dev = [
-    { name = "anyio" },
-    { name = "langgraph-cli", extra = ["inmem"] },
-    { name = "pytest" },
-    { name = "ruff" },
-]
-
-[package.metadata]
-requires-dist = [
-    { name = "chromadb", specifier = ">=1.5.9" },
-    { name = "fastapi", specifier = ">=0.136.0" },
-    { name = "langchain", specifier = ">=1.0.0" },
-    { name = "langchain-chroma", specifier = ">=1.1.0" },
-    { name = "langchain-community", specifier = ">=0.4.1" },
-    { name = "langchain-mcp-adapters", specifier = ">=0.2.2" },
-    { name = "langchain-openai", specifier = ">=1.2.1" },
-    { name = "langchain-text-splitters", specifier = ">=1.1.2" },
-    { name = "langgraph", specifier = ">=1.0.0" },
-    { name = "langgraph-checkpoint-sqlite", specifier = ">=3.1.0" },
-    { name = "mcp", specifier = ">=1.27.1" },
-    { name = "pymupdf", specifier = ">=1.27.2.3" },
-    { name = "python-dotenv", specifier = ">=1.0.1" },
-    { name = "python-multipart", specifier = ">=0.0.29" },
-    { name = "rank-bm25", specifier = ">=0.2.2" },
-    { name = "requests", specifier = ">=2.33.0" },
-    { name = "uvicorn", specifier = ">=0.47.0" },
-]
-
-[package.metadata.requires-dev]
-dev = [
-    { name = "anyio", specifier = ">=4.7.0" },
-    { name = "langgraph-cli", extras = ["inmem"], specifier = ">=0.4.10" },
-    { name = "pytest", specifier = ">=8.3.5" },
-    { name = "ruff", specifier = ">=0.8.0" },
-]
-
-[[package]]
 name = "opentelemetry-api"
 version = "1.42.0"
 source = { registry = "https://pypi.org/simple" }
@@ -1954,6 +1893,67 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/d7/f1/e7a6dd94a8d4a5626c03e4e99c87f241ba9e350cd9e6d75123f992427270/packaging-26.2.tar.gz", hash = "sha256:ff452ff5a3e828ce110190feff1178bb1f2ea2281fa2075aadb987c2fb221661", size = 228134, upload-time = "2026-04-24T20:15:23.917Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/df/b2/87e62e8c3e2f4b32e5fe99e0b86d576da1312593b39f47d8ceef365e95ed/packaging-26.2-py3-none-any.whl", hash = "sha256:5fc45236b9446107ff2415ce77c807cee2862cb6fac22b8a73826d0693b0980e", size = 100195, upload-time = "2026-04-24T20:15:22.081Z" },
+]
+
+[[package]]
+name = "paper-guide"
+version = "0.1.0"
+source = { editable = "." }
+dependencies = [
+    { name = "chromadb" },
+    { name = "fastapi" },
+    { name = "langchain" },
+    { name = "langchain-chroma" },
+    { name = "langchain-community" },
+    { name = "langchain-mcp-adapters" },
+    { name = "langchain-openai" },
+    { name = "langchain-text-splitters" },
+    { name = "langgraph" },
+    { name = "langgraph-checkpoint-sqlite" },
+    { name = "mcp" },
+    { name = "pymupdf" },
+    { name = "python-dotenv" },
+    { name = "python-multipart" },
+    { name = "rank-bm25" },
+    { name = "requests" },
+    { name = "uvicorn" },
+]
+
+[package.dev-dependencies]
+dev = [
+    { name = "anyio" },
+    { name = "langgraph-cli", extra = ["inmem"] },
+    { name = "pytest" },
+    { name = "ruff" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "chromadb", specifier = ">=1.5.9" },
+    { name = "fastapi", specifier = ">=0.136.0" },
+    { name = "langchain", specifier = ">=1.0.0" },
+    { name = "langchain-chroma", specifier = ">=1.1.0" },
+    { name = "langchain-community", specifier = ">=0.4.1" },
+    { name = "langchain-mcp-adapters", specifier = ">=0.2.2" },
+    { name = "langchain-openai", specifier = ">=1.2.1" },
+    { name = "langchain-text-splitters", specifier = ">=1.1.2" },
+    { name = "langgraph", specifier = ">=1.0.0" },
+    { name = "langgraph-checkpoint-sqlite", specifier = ">=3.1.0" },
+    { name = "mcp", specifier = ">=1.27.1" },
+    { name = "pymupdf", specifier = ">=1.27.2.3" },
+    { name = "python-dotenv", specifier = ">=1.0.1" },
+    { name = "python-multipart", specifier = ">=0.0.29" },
+    { name = "rank-bm25", specifier = ">=0.2.2" },
+    { name = "requests", specifier = ">=2.33.0" },
+    { name = "uvicorn", specifier = ">=0.47.0" },
+]
+
+[package.metadata.requires-dev]
+dev = [
+    { name = "anyio", specifier = ">=4.7.0" },
+    { name = "langgraph-cli", extras = ["inmem"], specifier = ">=0.4.10" },
+    { name = "pytest", specifier = ">=8.3.5" },
+    { name = "ruff", specifier = ">=0.8.0" },
 ]
 
 [[package]]

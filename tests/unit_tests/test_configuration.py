@@ -2,10 +2,10 @@
 
 from langgraph.pregel import Pregel
 
-from opendetect_ai.graph import build_graph, route
-from opendetect_ai.state import create_initial_state, AgentState
-from opendetect_ai.agents.supervisor import VALID_NEXT
-from opendetect_ai.context_utils import build_context_str
+from paper_guide.graph import build_graph, route
+from paper_guide.state import create_initial_state, AgentState
+from paper_guide.agents.supervisor import VALID_NEXT
+from paper_guide.context_utils import build_context_str
 from langchain_core.messages import HumanMessage, AIMessage
 
 

@@ -7,7 +7,7 @@ import pytest
 from fastapi import HTTPException
 from starlette.datastructures import Headers, UploadFile
 
-from opendetect_ai import graph
+from paper_guide import graph
 
 
 def test_non_stream_chat_forwards_user_id(monkeypatch) -> None:
@@ -77,7 +77,7 @@ def test_resume_rejects_when_no_approval_is_pending(monkeypatch) -> None:
 
 
 def test_memory_settings_endpoint_updates_current_user(monkeypatch, tmp_path) -> None:
-    from opendetect_ai import user_memory
+    from paper_guide import user_memory
 
     monkeypatch.setattr(user_memory, "_get_db_path", lambda: str(tmp_path / "memory.db"))
     response = asyncio.run(api.update_memory_settings(
@@ -91,7 +91,7 @@ def test_memory_settings_endpoint_updates_current_user(monkeypatch, tmp_path) ->
 
 
 def test_approvals_endpoint_only_returns_requested_user(monkeypatch, tmp_path) -> None:
-    from opendetect_ai import approval
+    from paper_guide import approval
 
     monkeypatch.setattr(approval, "_get_db_path", lambda: str(tmp_path / "approval.db"))
     now = approval._utcnow()

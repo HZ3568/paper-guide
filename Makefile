@@ -30,16 +30,16 @@ integration-tests:
 	uv run python -m pytest tests/integration_tests -q
 
 eval:
-	uv run python -m opendetect_ai.eval.rag_eval
+	uv run python -m paper_guide.eval.rag_eval
 
 intent-eval:
-	uv run python -m opendetect_ai.eval.intent_eval
+	uv run python -m paper_guide.eval.intent_eval
 
 clarify-eval:
-	uv run python -m opendetect_ai.eval.clarify_eval
+	uv run python -m paper_guide.eval.clarify_eval
 
 route-eval:
-	uv run python -m opendetect_ai.eval.route_eval
+	uv run python -m paper_guide.eval.route_eval
 
 lint:
 	uv run python -m ruff check src tests api.py

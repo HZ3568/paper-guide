@@ -5,7 +5,7 @@ from concurrent.futures import ThreadPoolExecutor
 import fitz
 import pytest
 
-from opendetect_ai.tools import rag_tool
+from paper_guide.tools import rag_tool
 
 
 def _write_layout_pdf(path) -> None:

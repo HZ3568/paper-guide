@@ -2,7 +2,7 @@ import json
 
 import pytest
 
-from opendetect_ai.eval import rag_eval
+from paper_guide.eval import rag_eval
 
 
 def _result(arxiv_id: str) -> dict:
@@ -43,7 +43,7 @@ def test_load_questions_rejects_missing_gold(tmp_path) -> None:
 
 
 def test_eval_method_records_retrieval_failures(monkeypatch) -> None:
-    from opendetect_ai.tools import retriever
+    from paper_guide.tools import retriever
 
     monkeypatch.setattr(retriever, "_llm_call_count", 0)
     metrics = rag_eval._eval_method(

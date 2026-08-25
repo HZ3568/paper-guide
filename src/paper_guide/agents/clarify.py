@@ -1,5 +1,5 @@
 """
-Clarify 判定逻辑 —— OpenDetect_AI（已接入 Graph，负责生成并渲染澄清问题）
+Clarify 判定逻辑 —— paper-guide（已接入 Graph，负责生成并渲染澄清问题）
 
 只覆盖「可可靠观测」的 5 类澄清信号，`low_relevance` 暂缓（检索层尚未透出可比 rerank 分数）：
   - ambiguous_reference   ：指代无法唯一映射（候选必须能在历史里 grounding 到原文证据）
@@ -25,13 +25,13 @@ from pydantic import BaseModel, Field
 from langchain_openai import ChatOpenAI
 from langchain_core.messages import BaseMessage, HumanMessage, AIMessage
 
-from opendetect_ai.tools.progress import push_progress
-from opendetect_ai.env_utils import (
+from paper_guide.tools.progress import push_progress
+from paper_guide.env_utils import (
     OPENDETECT_LLM_MODEL,
     OPENDETECT_LLM_BASE_URL,
     OPENDETECT_LLM_API_KEY,
 )
-from opendetect_ai.prompts import REFERENCE_RESOLUTION_PROMPT
+from paper_guide.prompts import REFERENCE_RESOLUTION_PROMPT
 
 # ── 具名阈值（待 golden set 校准，勿散落成魔法数）──────────────
 TITLE_MATCH_FLOOR = 0.55        # 标题匹配「绝对下限」：低于它不算合理候选

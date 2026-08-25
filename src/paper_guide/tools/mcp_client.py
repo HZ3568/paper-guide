@@ -1,5 +1,5 @@
 """
-MCP Client —— OpenDetect_AI
+MCP Client —— paper-guide
 通过 langchain-mcp-adapters 连接远程 ArXiv MCP 与本地 OpenAlex MCP，
 把 MCP 工具转成 LangChain Tool 供 Search Agent 调用。
 """
@@ -12,7 +12,7 @@ from pathlib import Path
 from langchain_core.tools import ToolException
 from langchain_mcp_adapters.client import MultiServerMCPClient
 
-from opendetect_ai.env_utils import OPENDETECT_ARXIV_MCP_URL
+from paper_guide.env_utils import OPENDETECT_ARXIV_MCP_URL
 
 _SERVER_SCRIPT = str(Path(__file__).parent / "openalex_mcp_server.py")
 

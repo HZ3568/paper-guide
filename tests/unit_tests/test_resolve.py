@@ -5,9 +5,9 @@
 
 from langchain_core.messages import HumanMessage, AIMessage
 
-from opendetect_ai.agents import resolve as resolve_mod
-from opendetect_ai.agents.clarify import ReferentCandidate, ResolveResult, resolve_reference_llm
-from opendetect_ai.agents.resolve import (
+from paper_guide.agents import resolve as resolve_mod
+from paper_guide.agents.clarify import ReferentCandidate, ResolveResult, resolve_reference_llm
+from paper_guide.agents.resolve import (
     resolve_node,
     _confirm_verdict,
     _needs_rewrite,

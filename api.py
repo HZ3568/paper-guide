@@ -1,5 +1,5 @@
 """
-OpenDetect AI — FastAPI 后端包装层
+paper-guide — FastAPI 后端包装层
 将 LangGraph 工作流封装为 HTTP API，供前端调用。
 
 运行方式（在项目根目录执行）:
@@ -22,10 +22,10 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, JSONResponse, StreamingResponse
 from langchain_core.messages import AIMessage
 from pydantic import BaseModel, Field
-from opendetect_ai.tools.progress import drain_queue, cleanup_queue
-from opendetect_ai.env_utils import OPENDETECT_CORS_ORIGINS, OPENDETECT_MAX_PDF_MB
+from paper_guide.tools.progress import drain_queue, cleanup_queue
+from paper_guide.env_utils import OPENDETECT_CORS_ORIGINS, OPENDETECT_MAX_PDF_MB
 
-app = FastAPI(title="OpenDetect AI", version="1.0.0")
+app = FastAPI(title="paper-guide", version="1.0.0")
 
 app.add_middleware(
     CORSMiddleware,
@@ -147,7 +147,7 @@ def _extract_answer(accumulated: dict) -> dict:
 async def chat_endpoint(req: ChatRequest):
     """向 Agent 发送消息，返回最终回答（非流式）。"""
     try:
-        from opendetect_ai.graph import chat as graph_chat
+        from paper_guide.graph import chat as graph_chat
         state = await asyncio.to_thread(
             graph_chat, req.query, req.thread_id, req.user_id, True
         )
@@ -166,7 +166,7 @@ async def chat_endpoint(req: ChatRequest):
 @app.get("/api/threads")
 async def get_threads():
     try:
-        from opendetect_ai.graph import list_threads
+        from paper_guide.graph import list_threads
         threads = await asyncio.to_thread(list_threads)
         return {"threads": threads or []}
     except Exception as e:
@@ -176,7 +176,7 @@ async def get_threads():
 @app.get("/api/papers")
 async def get_papers():
     try:
-        from opendetect_ai.tools.rag_tool import list_ingested_papers
+        from paper_guide.tools.rag_tool import list_ingested_papers
         papers = await asyncio.to_thread(list_ingested_papers.invoke, {})
         if papers and isinstance(papers[0], dict) and "message" in papers[0]:
             return {"papers": [], "total": 0}
@@ -220,8 +220,8 @@ async def upload_pdf(
         if header != b"%PDF-":
             raise HTTPException(status_code=400, detail="文件内容不是有效的 PDF")
 
-        from opendetect_ai.tools.rag_tool import ingest_local_pdf
-        from opendetect_ai.approval import record_explicit_approval
+        from paper_guide.tools.rag_tool import ingest_local_pdf
+        from paper_guide.approval import record_explicit_approval
         effective_title = title.strip() or Path(filename).stem
         file_digest = hashlib.sha256(Path(tmp_path).read_bytes()).hexdigest()
         await asyncio.to_thread(
@@ -356,7 +356,7 @@ async def _sse_run(chat_graph, config, graph_input, thread_id):
 
     cleanup_queue(thread_id)
 
-    from opendetect_ai.graph import spawn_profile_extraction
+    from paper_guide.graph import spawn_profile_extraction
     answer = _extract_answer(last_snapshot)
     spawn_profile_extraction(last_snapshot.get("messages", []),
                              last_snapshot.get("user_id", "default"))
@@ -377,8 +377,8 @@ async def chat_stream_endpoint(req: ChatRequest):
         execution_lock = None
         lock_acquired = False
         try:
-            from opendetect_ai.graph import _get_chat_graph, build_turn_input, get_thread_lock
-            from opendetect_ai.env_utils import validate_env
+            from paper_guide.graph import _get_chat_graph, build_turn_input, get_thread_lock
+            from paper_guide.env_utils import validate_env
             validate_env()
 
             chat_graph = _get_chat_graph()
@@ -415,7 +415,7 @@ async def chat_resume_endpoint(req: ResumeRequest):
         execution_lock = None
         lock_acquired = False
         try:
-            from opendetect_ai.graph import _get_chat_graph, get_thread_lock
+            from paper_guide.graph import _get_chat_graph, get_thread_lock
             from langgraph.types import Command
             chat_graph = _get_chat_graph()
             execution_lock = get_thread_lock(req.thread_id)
@@ -449,7 +449,7 @@ async def chat_resume_endpoint(req: ResumeRequest):
 @app.get("/api/approvals")
 async def get_approvals(user_id: str = "default", limit: int = 50):
     """查询当前用户的审批审计记录。"""
-    from opendetect_ai.approval import list_approvals
+    from paper_guide.approval import list_approvals
     approvals = await asyncio.to_thread(list_approvals, user_id, limit)
     return {"approvals": approvals, "total": len(approvals)}
 
@@ -459,7 +459,7 @@ async def get_approvals(user_id: str = "default", limit: int = 50):
 async def get_user_profile(user_id: str = "default"):
     """获取指定用户的长期偏好记忆。"""
     try:
-        from opendetect_ai.user_memory import (
+        from paper_guide.user_memory import (
             get_memory_settings,
             list_memory_entries,
             load_user_profile,
@@ -476,7 +476,7 @@ async def get_user_profile(user_id: str = "default"):
 async def clear_user_profile(user_id: str = "default"):
     """清除指定用户的长期偏好记忆（重置画像）。"""
     try:
-        from opendetect_ai.user_memory import _get_db_path, _ensure_table
+        from paper_guide.user_memory import _get_db_path, _ensure_table
         import sqlite3
         def _clear():
             conn = sqlite3.connect(_get_db_path(), check_same_thread=False)
@@ -494,7 +494,7 @@ async def clear_user_profile(user_id: str = "default"):
 async def update_memory_settings(req: MemorySettingsRequest):
     """启用/关闭长期记忆，并设置可选 TTL。"""
     try:
-        from opendetect_ai.user_memory import set_memory_settings
+        from paper_guide.user_memory import set_memory_settings
         settings = await asyncio.to_thread(
             set_memory_settings,
             req.user_id,

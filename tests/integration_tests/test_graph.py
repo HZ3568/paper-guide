@@ -1,4 +1,4 @@
-"""集成测试：真实驱动 OpenDetect 主图。
+"""集成测试：真实驱动 paper-guide 主图。
 
 需要有效的 LLM Key 才运行；未配置时自动跳过（不会让 CI 变红）。
 用一句纯闲聊（"你好"）触发 Supervisor → FINISH 的最短路径，
@@ -9,8 +9,8 @@ import os
 
 import pytest
 
-from opendetect_ai.graph import build_graph
-from opendetect_ai.state import create_initial_state
+from paper_guide.graph import build_graph
+from paper_guide.state import create_initial_state
 
 if not os.getenv("OPENDETECT_LLM_API_KEY") and not os.getenv("DEEPSEEK_API_KEY"):
     pytest.skip(

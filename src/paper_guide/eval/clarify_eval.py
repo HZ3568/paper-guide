@@ -1,5 +1,5 @@
 """
-Clarify 澄清判定 golden set —— OpenDetect_AI（阶段 ⑦，先评测后改 Graph）
+Clarify 澄清判定 golden set —— paper-guide（阶段 ⑦，先评测后改 Graph）
 
 覆盖四个判定面（前二含真实模型，后二纯确定性）：
   reference     ：resolve_reference_llm → judge_reference（候选须 grounding）——含真实模型
@@ -11,7 +11,7 @@ Clarify 澄清判定 golden set —— OpenDetect_AI（阶段 ⑦，先评测后
 
 运行：
     make clarify-eval
-    uv run python -m opendetect_ai.eval.clarify_eval
+    uv run python -m paper_guide.eval.clarify_eval
 """
 
 from __future__ import annotations
@@ -21,7 +21,7 @@ from typing import Any
 
 from langchain_core.messages import HumanMessage, AIMessage
 
-from opendetect_ai.agents.clarify import (
+from paper_guide.agents.clarify import (
     judge_title_pool,
     judge_entity_conflict,
     judge_reference,

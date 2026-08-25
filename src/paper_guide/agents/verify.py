@@ -9,16 +9,16 @@ from pydantic import BaseModel, Field
 from langchain_openai import ChatOpenAI
 from langchain_core.messages import AIMessage, HumanMessage
 
-from opendetect_ai.state import AgentState, effective_query
-from opendetect_ai.agents.resolve import make_search_pending
-from opendetect_ai.tools.progress import push_progress
-from opendetect_ai.env_utils import (
+from paper_guide.state import AgentState, effective_query
+from paper_guide.agents.resolve import make_search_pending
+from paper_guide.tools.progress import push_progress
+from paper_guide.env_utils import (
     OPENDETECT_LLM_MODEL,
     OPENDETECT_LLM_BASE_URL,
     OPENDETECT_LLM_API_KEY,
     OPENDETECT_VERIFY,
 )
-from opendetect_ai.prompts import VERIFY_PROMPT
+from paper_guide.prompts import VERIFY_PROMPT
 
 
 class _ClaimEvidence(BaseModel):
