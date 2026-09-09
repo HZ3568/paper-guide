@@ -69,18 +69,19 @@ flowchart TD
 | PDF parsing | PyMuPDF |
 | API | FastAPI + SSE |
 | Frontend | Single-page HTML |
-| Tooling | uv, pytest, Ruff |
+| Tooling | conda, pip, pytest, Ruff |
 
 ## Quick Start
 
 ### 1. Install
 
-项目要求 Python 3.13+ 和 `uv`。
+项目要求 Python 3.13+ 和 conda（Anaconda/Miniconda）。
 
 ```bash
 git clone https://github.com/HZ3568/paper-guide.git
 cd paper-guide
-uv sync
+conda env create -f environment.yml
+conda activate paper-guide
 ```
 
 ### 2. Configure Environment
@@ -108,7 +109,7 @@ CHROMA_PERSIST_DIR="./data/chroma_db"
 ### 3. Run Web App
 
 ```bash
-uv run uvicorn api:app --reload --host 0.0.0.0 --port 8000
+uvicorn api:app --reload --host 0.0.0.0 --port 8000
 ```
 
 打开 `http://localhost:8000`。
@@ -264,7 +265,7 @@ SSE 在核验完成前只发送节点进度，不发送正文草稿；核验结�
 运行：
 
 ```bash
-uv run python -m paper_guide.eval.rag_eval --dataset data/eval/questions.jsonl --no-judge
+python -m paper_guide.eval.rag_eval --dataset data/eval/questions.jsonl --no-judge
 ```
 
 ## API

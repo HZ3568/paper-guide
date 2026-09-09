@@ -31,42 +31,30 @@ class AgentState(dict):
     """
     贯穿整个工作流的共享状态。
     LangGraph 的每个节点接收这个状态，处理后返回更新的字段。
-
-    字段说明：
-        messages      : 完整对话历史，使用 operator.add 追加（LangGraph 标准写法）
-        user_query    : 用户原始输入
-        next          : Supervisor 决定的下一个节点名称
-        search_results: Search Agent 找到的论文列表
-        papers_to_ingest: 待入向量库的论文列表
-        ingested_count: 已成功入库的论文数量
-        rag_context   : RAG Agent 从向量库召回的相关段落
-        rag_answer    : RAG Agent 生成的最终回答
-        final_report  : Report Agent 生成的综述或对比表
-        error         : 任意节点出错时记录错误信息
     """
 
     # add_messages 支持按 message.id 覆盖。AnswerGuard 因此能用核验后的回答
     # 替换 RAG/Report 草稿，而不是让未通过核验的文本残留在会话历史中。
-    messages:         Annotated[list[BaseMessage], add_messages]
-    user_query:       str            # 用户本轮原始输入（永不覆写，供日志/评测/回溯）
-    resolved_query:   str            # 上游 resolve 出的自包含检索问题；下游用 effective_query() 读取
-    pending_action:   dict[str, Any] | None  # 系统提出的待确认动作 {"kind","query"}；确认时消费、拒绝/新任务时清空
-    next:             str
-    search_results:   list[PaperMeta]
-    papers_to_ingest: list[PaperMeta]
-    ingested_count:   int
-    rag_context:      list[dict[str, Any]]
-    rag_answer:       str
-    verification:     dict[str, Any]  # AnswerGuard 结构化结果：状态、置信度、无支撑论断/引用
-    final_report:     str
-    error:            str
-    search_attempted: bool
-    local_pdf_path:   str
-    failed_papers:    list[PaperMeta]
-    direct_answer:    str            # Supervisor 针对闲聊/身份询问生成的直接回复
-    thread_id:        str            # 当前会话 ID，用于进度推送队列隔离
-    hitl:             bool           # 是否开启入库前人工确认（仅 Web 持久化会话置 True）
-    user_id:          str            # 用户标识，长期记忆按此隔离（跨会话）
+    messages:         Annotated[list[BaseMessage], add_messages]  # 完整对话历史，使用 add_messages 追加（LangGraph 标准写法）
+    user_query:       str                                         # 用户原始输入（永不覆写，供日志/评测/回溯）
+    resolved_query:   str                                         # 上游 resolve 出的自包含检索问题；下游用 effective_query() 读取
+    pending_action:   dict[str, Any] | None                       # 系统提出的待确认动作 {"kind","query"}；确认时消费、拒绝/新任务时清空
+    next:             str                                         # Supervisor 决定的下一个节点名称
+    search_results:   list[PaperMeta]                             # Search Agent 找到的论文列表
+    papers_to_ingest: list[PaperMeta]                             # 待入向量库的论文列表
+    ingested_count:   int                                         # 已成功入库的论文数量
+    rag_context:      list[dict[str, Any]]                        # RAG Agent 从向量库召回的相关段落
+    rag_answer:       str                                         # RAG Agent 生成的最终回答
+    verification:     dict[str, Any]                              # AnswerGuard 结构化结果：状态、置信度、无支撑论断/引用
+    final_report:     str                                         # Report Agent 生成的综述或对比表
+    error:            str                                         # 任意节点出错时记录错误信息
+    search_attempted: bool                                        # 是否已执行过搜索，防止重复路由到 search
+    local_pdf_path:   str                                         # 待入库的本地 PDF 路径，Ingest 处理完后清空
+    failed_papers:    list[PaperMeta]                             # 重试超限仍入失败的论文，下一轮复用重试
+    direct_answer:    str                                         # Supervisor 针对闲聊/身份询问生成的直接回复
+    thread_id:        str                                         # 当前会话 ID，用于进度推送队列隔离
+    hitl:             bool                                        # 是否开启入库前人工确认（仅 Web 持久化会话置 True）
+    user_id:          str                                         # 用户标识，长期记忆按此隔离（跨会话）
 
 
 def effective_query(state: dict) -> str:

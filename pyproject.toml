@@ -12,7 +12,6 @@ dependencies = [
     "uvicorn>=0.47.0",
     "python-multipart>=0.0.29",
     # LangChain 生态
-    "langchain>=1.0.0",
     "langchain-chroma>=1.1.0",
     "langchain-community>=0.4.1",
     "langchain-mcp-adapters>=0.2.2",
@@ -30,19 +29,17 @@ dependencies = [
     "requests>=2.33.0",
     "rank-bm25>=0.2.2",
 ]
- 
-[build-system]
-requires = ["uv_build>=0.8.15,<0.9.0"]
-build-backend = "uv_build"
- 
-[dependency-groups]
+
+[project.optional-dependencies]
 dev = [
     "anyio>=4.7.0",
-    "langgraph-cli[inmem]>=0.4.10",
     "pytest>=8.3.5",
     "ruff>=0.8.0",
 ]
- 
-[tool.uv.build-backend]
-module-name = "paper_guide"
-source-include = ["langgraph.json", ".env.example", "Makefile", "tests/**"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/paper_guide"]

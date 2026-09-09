@@ -1,10 +1,12 @@
-.PHONY: help install dev run test integration-tests lint format eval intent-eval clarify-eval route-eval
+.PHONY: help install dev run test integration-tests eval intent-eval clarify-eval route-eval lint format
+
+ENV_NAME = paper-guide
 
 help:
 	@echo 'Targets:'
-	@echo '  install             Sync runtime dependencies with uv'
-	@echo '  dev                 Sync project + dev dependencies with uv'
-	@echo '  run                 Start the local LangGraph dev server'
+	@echo '  install             Create or update the conda environment (python 3.13 + deps)'
+	@echo '  dev                 Alias for install (full dev environment)'
+	@echo '  run                 Start the FastAPI web app (uvicorn)'
 	@echo '  test                Run unit tests'
 	@echo '  integration-tests   Run integration tests'
 	@echo '  eval                Run RAG retrieval eval (baseline vs pipeline)'
@@ -15,34 +17,33 @@ help:
 	@echo '  format              Format with Ruff'
 
 install:
-	uv sync --no-dev
+	conda env update -f environment.yml --prune || conda env create -f environment.yml
 
-dev:
-	uv sync
+dev: install
 
 run:
-	uv run langgraph dev
+	conda run --no-capture-output -n $(ENV_NAME) uvicorn api:app --reload --host 0.0.0.0 --port 8000
 
 test:
-	uv run python -m pytest tests/unit_tests -q
+	conda run -n $(ENV_NAME) python -m pytest tests/unit_tests -q
 
 integration-tests:
-	uv run python -m pytest tests/integration_tests -q
+	conda run -n $(ENV_NAME) python -m pytest tests/integration_tests -q
 
 eval:
-	uv run python -m paper_guide.eval.rag_eval
+	conda run -n $(ENV_NAME) python -m paper_guide.eval.rag_eval
 
 intent-eval:
-	uv run python -m paper_guide.eval.intent_eval
+	conda run -n $(ENV_NAME) python -m paper_guide.eval.intent_eval
 
 clarify-eval:
-	uv run python -m paper_guide.eval.clarify_eval
+	conda run -n $(ENV_NAME) python -m paper_guide.eval.clarify_eval
 
 route-eval:
-	uv run python -m paper_guide.eval.route_eval
+	conda run -n $(ENV_NAME) python -m paper_guide.eval.route_eval
 
 lint:
-	uv run python -m ruff check src tests api.py
+	conda run -n $(ENV_NAME) python -m ruff check src tests api.py
 
 format:
-	uv run python -m ruff format src tests api.py
+	conda run -n $(ENV_NAME) python -m ruff format src tests api.py

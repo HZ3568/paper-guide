@@ -1,0 +1,43 @@
+# conda env create -f environment.yml
+name: paper-guide
+channels:
+  - conda-forge
+dependencies:
+  - python=3.13
+  - pip
+  - pip:
+      # ── 运行时依赖 ──
+      # 向量数据库
+      - "chromadb>=1.5.9"
+      # Web 框架
+      - "fastapi>=0.136.0"
+      - "uvicorn>=0.47.0"
+      - "python-multipart>=0.0.29"
+      # LangChain 生态
+      - "langchain-core"                  # 直接 import langchain_core
+      - "langchain-chroma>=1.1.0"
+      - "langchain-community>=0.4.1"
+      - "langchain-mcp-adapters>=0.2.2"
+      - "langchain-openai>=1.2.1"
+      - "langchain-text-splitters>=1.1.2"
+      # LangGraph
+      - "langgraph>=1.0.0"
+      - "langgraph-checkpoint-sqlite>=3.1.0"
+      # MCP 协议
+      - "mcp>=1.27.1"
+      # 数据模型（直接 import pydantic / urllib3）
+      - "pydantic"
+      - "urllib3"
+      # PDF 解析
+      - "pymupdf>=1.27.2.3"
+      # 工具
+      - "python-dotenv>=1.0.1"
+      - "requests>=2.33.0"
+      - "rank-bm25>=0.2.2"                # langchain-community BM25Retriever 依赖
+      # ── 开发/测试依赖 ──
+      - "anyio>=4.7.0"                    # pytest anyio 插件（tests/conftest.py）
+      - "pytest>=8.3.5"
+      - "ruff>=0.8.0"
+      - "starlette"                       # 测试直接 import starlette.datastructures
+      # ── 本地项目（editable 安装，使 src/paper_guide 可导入）──
+      - "-e ."

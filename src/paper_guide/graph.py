@@ -6,10 +6,10 @@ LangGraph 主工作流 —— paper-guide
 from __future__ import annotations
 
 from langgraph.graph import StateGraph, END
-import sqlite3         # ← 新增
+import sqlite3  # ← 新增
 import threading
 from concurrent.futures import ThreadPoolExecutor
-from langgraph.checkpoint.sqlite import SqliteSaver          # ← 新增
+from langgraph.checkpoint.sqlite import SqliteSaver  # ← 新增
 
 from paper_guide.tools.rag_tool import list_ingested_papers
 from paper_guide.state import AgentState, create_initial_state
@@ -21,10 +21,18 @@ from paper_guide.agents.ingest import ingest_node
 from paper_guide.agents.rag import rag_node
 from paper_guide.agents.report import report_node
 from paper_guide.agents.verify import verify_node
-from paper_guide.env_utils import validate_env, CHROMA_PERSIST_DIR, OPENDETECT_LLM_MODEL, OPENDETECT_LLM_BASE_URL, OPENDETECT_LLM_API_KEY  
+from paper_guide.env_utils import (
+    validate_env,
+    CHROMA_PERSIST_DIR,
+    OPENDETECT_LLM_MODEL,
+    OPENDETECT_LLM_BASE_URL,
+    OPENDETECT_LLM_API_KEY,
+)
 
 import os
+
 _DB_PATH = os.path.join(os.path.dirname(CHROMA_PERSIST_DIR), "chat_history.db")
+
 
 # ── 路由函数：读取 state.next，返回下一个节点名 ────────────────
 def route(state: AgentState) -> str:
@@ -47,7 +55,7 @@ def route_after_search(state: AgentState) -> str:
       - 有待入库论文 → 直连 ingest，省一次 Supervisor LLM；
       - 否则回 Supervisor 收尾。
     """
-    pa = state.get("pending_action")
+    pa = state.get("pending_action")  # pending action: 待处理的操作
     if pa and pa.get("kind") == "clarification":
         return "clarify"
     pending = [p for p in state.get("papers_to_ingest", []) if not p.ingested]
@@ -78,14 +86,14 @@ def build_graph(checkpointer=None) -> StateGraph:
     builder = StateGraph(AgentState)
 
     # ── 注册节点 ───────────────────────────────────────────────
-    builder.add_node("resolve",    resolve_node)
-    builder.add_node("clarify",    clarify_node)
+    builder.add_node("resolve", resolve_node)
+    builder.add_node("clarify", clarify_node)
     builder.add_node("supervisor", supervisor_node)
-    builder.add_node("search",     search_node)
-    builder.add_node("ingest",     ingest_node)
-    builder.add_node("rag",        rag_node)
-    builder.add_node("report",     report_node)
-    builder.add_node("verify",     verify_node)
+    builder.add_node("search", search_node)
+    builder.add_node("ingest", ingest_node)
+    builder.add_node("rag", rag_node)
+    builder.add_node("report", report_node)
+    builder.add_node("verify", verify_node)
 
     # ── 入口：每轮先经 resolve 做上游查询解析 ──────────────────
     # resolve 只在 START→resolve 执行一次；指代歧义→clarify 收束，否则→supervisor。
@@ -95,18 +103,20 @@ def build_graph(checkpointer=None) -> StateGraph:
         route_after_resolve,
         {"clarify": "clarify", "supervisor": "supervisor"},
     )
-    builder.add_edge("clarify", END)   # 澄清是普通对话轮，问完即收束，等下一轮 resolve 解析回复
+    builder.add_edge(
+        "clarify", END
+    )  # 澄清是普通对话轮，问完即收束，等下一轮 resolve 解析回复
 
     # ── 条件路由：supervisor → 各子 Agent ─────────────────────
     builder.add_conditional_edges(
         "supervisor",
         route,
         {
-            "search":  "search",
-            "ingest":  "ingest",
-            "rag":     "rag",
-            "report":  "report",
-            "FINISH":  END,
+            "search": "search",
+            "ingest": "ingest",
+            "rag": "rag",
+            "report": "report",
+            "FINISH": END,
         },
     )
 
@@ -117,14 +127,15 @@ def build_graph(checkpointer=None) -> StateGraph:
         {"clarify": "clarify", "ingest": "ingest", "supervisor": "supervisor"},
     )
     # Ingest 完成后回 supervisor，由它按用户意图决定 rag / report / FINISH
-    builder.add_edge("ingest",  "supervisor")
+    builder.add_edge("ingest", "supervisor")
 
     # 所有基于论文证据的用户输出统一经过 AnswerGuard。
-    builder.add_edge("rag",     "verify")
-    builder.add_edge("report",  "verify")
-    builder.add_edge("verify",  END)
+    builder.add_edge("rag", "verify")
+    builder.add_edge("report", "verify")
+    builder.add_edge("verify", END)
 
-    return builder.compile(checkpointer=checkpointer)        # ← 传入 checkpointer
+    return builder.compile(checkpointer=checkpointer)  # ← 传入 checkpointer
+
 
 # ── 单轮图（无记忆，原有 run() 用）────────────────────────────
 graph = build_graph()
@@ -132,17 +143,20 @@ graph = build_graph()
 
 # ── 多轮图（SQLite 持久化）─────────────────────────────────────
 
-_chat_graph = None   # ← 全局单例
+_chat_graph = None  # ← 全局单例
 _chat_graph_lock = threading.Lock()
 _thread_locks: dict[str, threading.Lock] = {}
 _thread_locks_guard = threading.Lock()
-_profile_executor = ThreadPoolExecutor(max_workers=2, thread_name_prefix="profile-memory")
+_profile_executor = ThreadPoolExecutor(
+    max_workers=2, thread_name_prefix="profile-memory"
+)
 
 
 def get_thread_lock(thread_id: str) -> threading.Lock:
     """同一会话串行执行，防止并发请求从同一 checkpoint 分叉。"""
     with _thread_locks_guard:
         return _thread_locks.setdefault(thread_id, threading.Lock())
+
 
 def _get_chat_graph():
     """
@@ -171,14 +185,18 @@ def _print_output(final_state: dict) -> None:
         print(f"\n[综述报告]\n{final_state['final_report']}")
     if final_state.get("error"):
         print(f"\n[错误信息]\n{final_state['error']}")
-    if (final_state.get("ingested_count", 0) > 0
-            and not final_state.get("rag_answer")
-            and not final_state.get("final_report")):
+    if (
+        final_state.get("ingested_count", 0) > 0
+        and not final_state.get("rag_answer")
+        and not final_state.get("final_report")
+    ):
         papers = list_ingested_papers.invoke({})
         if papers and "message" not in papers[0]:
             print("\n[已入库论文列表]")
             for i, p in enumerate(papers, 1):
-                print(f"  {i}. {p.get('title')} ({p.get('published')}) arxiv:{p.get('arxiv_id') or '无'}")
+                print(
+                    f"  {i}. {p.get('title')} ({p.get('published')}) arxiv:{p.get('arxiv_id') or '无'}"
+                )
 
 
 # ── 共享辅助：避免 run() / chat() / api.py 三处重复 ────────────
@@ -188,8 +206,9 @@ def _live_ingested_count() -> int:
     return 0 if (existing and "message" in existing[0]) else len(existing)
 
 
-def build_turn_input(chat_graph, config: dict, user_query: str, thread_id: str,
-                     user_id: str = "default") -> dict:
+def build_turn_input(
+    chat_graph, config: dict, user_query: str, thread_id: str, user_id: str = "default"
+) -> dict:
     """
     构造「一轮对话」的输入 state（供多轮 chat 与 Web SSE 共用）。
 
@@ -203,22 +222,22 @@ def build_turn_input(chat_graph, config: dict, user_query: str, thread_id: str,
 
     if current.values:
         return {
-            "user_query":       user_query,
-            "resolved_query":   "",
-            "pending_action":   current.values.get("pending_action"),
-            "next":             "supervisor",
+            "user_query": user_query,
+            "resolved_query": "",
+            "pending_action": current.values.get("pending_action"),
+            "next": "supervisor",
             "search_attempted": False,
-            "rag_answer":       "",
-            "verification":     {},
-            "final_report":     "",
-            "direct_answer":    "",
-            "error":            "",
-            "search_results":   [],
+            "rag_answer": "",
+            "verification": {},
+            "final_report": "",
+            "direct_answer": "",
+            "error": "",
+            "search_results": [],
             "papers_to_ingest": [],
-            "failed_papers":    current.values.get("failed_papers", []),
-            "ingested_count":   already_ingested,
-            "thread_id":        thread_id,
-            "user_id":          user_id,
+            "failed_papers": current.values.get("failed_papers", []),
+            "ingested_count": already_ingested,
+            "thread_id": thread_id,
+            "user_id": user_id,
         }
 
     state = create_initial_state(user_query)
@@ -235,6 +254,7 @@ def spawn_profile_extraction(messages: list, user_id: str = "default") -> None:
         return
     try:
         from paper_guide.user_memory import extract_and_save_profile
+
         _profile_executor.submit(
             extract_and_save_profile,
             messages,
@@ -263,7 +283,9 @@ def run(user_query: str) -> dict:
     final_state = graph.invoke(initial_state, config={"recursion_limit": 20})
     _print_output(final_state)
 
-    spawn_profile_extraction(final_state.get("messages", []), final_state.get("user_id", "default"))
+    spawn_profile_extraction(
+        final_state.get("messages", []), final_state.get("user_id", "default")
+    )
     return final_state
 
 
@@ -298,13 +320,17 @@ def chat(
     with get_thread_lock(thread_id):
         # 构造输入和执行必须处于同一个临界区，避免两个请求读取同一父 checkpoint。
         current = chat_graph.get_state(config)
-        input_state = build_turn_input(chat_graph, config, user_query, thread_id, user_id)
+        input_state = build_turn_input(
+            chat_graph, config, user_query, thread_id, user_id
+        )
         input_state["hitl"] = hitl
         already_ingested = input_state["ingested_count"]
 
         print(f"\n{'='*50}")
         if current.values:
-            print(f"[会话 {thread_id}] 第 {len(current.values.get('messages', [])) // 2 + 1} 轮对话（向量库实时计数: {already_ingested} 篇）")
+            print(
+                f"[会话 {thread_id}] 第 {len(current.values.get('messages', [])) // 2 + 1} 轮对话（向量库实时计数: {already_ingested} 篇）"
+            )
         else:
             print(f"[会话 {thread_id}] 新会话开始")
         print(f"用户问题: {user_query}")
@@ -333,10 +359,12 @@ def list_threads() -> list[str]:
     try:
         # SqliteSaver 支持列出所有 checkpoint
         checkpointer = chat_graph.checkpointer
-        threads = list({
-            item.config["configurable"]["thread_id"]
-            for item in checkpointer.list(None)
-        })
+        threads = list(
+            {
+                item.config["configurable"]["thread_id"]
+                for item in checkpointer.list(None)
+            }
+        )
         return threads
     except Exception:
         return []

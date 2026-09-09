@@ -19,7 +19,6 @@ data/chat_history.db-shm
 data/chat_history.db-wal
 
 # ── 缓存 ──────────────────────────────────────────
-.uv-cache/
 .pytest_cache/
 .langgraph_api/
 .mypy_cache/
